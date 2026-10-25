@@ -1,0 +1,13 @@
+# Render の Blueprint（このファイルを読むと、Web サイトを無料プランで自動で作ってくれる）
+services:
+  - type: web
+    name: sensor-placement-drone-app
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: AMPLIFY_TOKEN        # Amplify AE のトークン。値は Render の画面で貼る（ここには書かない）
+        sync: false

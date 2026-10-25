@@ -74,3 +74,9 @@ python3 -m uvicorn server.main:app --port 8000
 
 - `python3 tools/check_phase2.py` … サンプルの地震で二段階目を 1 回解き、後処理で足した数などを 1 行で出す（httpx が要る）
 - `python3 tools/try_phase1_settings.py` … 一段階目を重み・制限時間を変えて何通りか解く
+
+## Render で公開する
+
+1. https://dashboard.render.com/blueprint/new?repo=https://github.com/watanabehinata32-png/sensor-placement-drone-app を開く（render.yaml を読む）
+2. AMPLIFY_TOKEN の欄にトークンを貼る
+3. 「Apply」（作成）を押す。数分で URL ができる（無料プランは、しばらく使わないと止まり、次に開くと起動に 1 分ほどかかる）
