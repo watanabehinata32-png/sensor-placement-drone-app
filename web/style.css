@@ -1,0 +1,102 @@
+/* 画面の見た目. 地図の色は style.json（資料の凡例の色）を app.js で読んで使う */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+       font-size: 14px; color: #222; background: #fff; }
+header { display: flex; align-items: center; gap: 16px; padding: 8px 16px; border-bottom: 1px solid #ddd;
+         flex-wrap: wrap; }
+header h1 { font-size: 18px; margin: 0; }
+#placement-banner { background: #eef4ff; border: 1px solid #b6ccf5; border-radius: 6px; padding: 4px 10px; }
+#solver-label { color: #666; font-size: 12px; margin-left: auto; }
+
+main { display: flex; height: calc(100vh - 50px); }
+#panel { width: 480px; min-width: 480px; overflow-y: auto; padding: 8px 12px; border-right: 1px solid #ddd; }
+#map-area { flex: 1; position: relative; }
+#map { position: absolute; inset: 0; background: #fff; }
+#legend { position: absolute; right: 10px; bottom: 10px; z-index: 1000; background: rgba(255,255,255,0.92);
+          border: 1px solid #ccc; border-radius: 6px; padding: 6px 10px; font-size: 12px; line-height: 1.7; }
+.legend-line { display: inline-block; width: 26px; vertical-align: middle; margin-right: 6px; }
+.legend-mark { display: inline-block; width: 26px; text-align: center; margin-right: 6px; }
+
+.step { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; }
+.step h2 { font-size: 15px; margin: 0; padding: 8px 10px; background: #f5f5f5; border-radius: 8px 8px 0 0;
+           cursor: pointer; }
+.step.active { border-color: #4a7bd0; }
+.step.active h2 { background: #e3ecfb; }
+.step-body { padding: 8px 10px; }
+.step h3 { font-size: 13px; margin: 10px 0 4px; }
+.hint { color: #555; font-size: 13px; margin: 4px 0 8px; }
+.note { color: #8a5a00; font-size: 13px; margin: 6px 0; }
+.status { margin: 6px 0; font-size: 13px; }
+.status.error { color: #c92a2a; }
+.buttons { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+button, .file-button { font: inherit; padding: 6px 10px; border: 1px solid #aaa; border-radius: 6px;
+                       background: #fff; cursor: pointer; display: inline-block; }
+button:disabled { opacity: 0.5; cursor: wait; }
+button.primary { background: #2f6fd6; color: #fff; border-color: #2f6fd6; }
+.wide { display: block; width: 100%; margin: 8px 0; text-align: center; }
+.file-button input { display: none; }
+details { margin: 8px 0; }
+details label { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 3px 0; }
+details input[type=number] { width: 90px; }
+label.check { justify-content: flex-start; }
+.click-mode label { display: block; margin: 2px 0 2px 8px; }
+.counts { margin: 6px 0; font-weight: bold; }
+
+table { border-collapse: collapse; width: 100%; font-size: 12px; margin: 6px 0; }
+th, td { border-bottom: 1px solid #eee; padding: 3px 4px; text-align: right; }
+th:first-child, td:first-child { text-align: left; }
+.metrics { display: flex; gap: 8px; margin: 6px 0; }
+.metric { flex: 1; border: 1px solid #ddd; border-radius: 6px; padding: 6px; text-align: center; }
+.metric .value { font-size: 18px; font-weight: bold; }
+.metric .label { font-size: 11px; color: #666; }
+.ok { color: #2b8a3e; } .ng { color: #c92a2a; }
+
+/* 時刻表（横棒） */
+.gantt-row { display: flex; align-items: center; margin: 3px 0; }
+.gantt-name { width: 110px; font-size: 12px; }
+.gantt-track { position: relative; flex: 1; height: 16px; background: #f8f8f8; }
+.gantt-bar { position: absolute; top: 2px; height: 12px; }
+.gantt-star { position: absolute; top: -2px; font-size: 13px; color: #c92a2a; transform: translateX(-50%); }
+.gantt-end { position: absolute; top: -4px; bottom: -4px; border-left: 2px dashed #c92a2a; }
+
+/* 地図の上の印（センサーの三角・拠点など） */
+.mark { background: none; border: none; }
+.leaflet-tooltip.road-name { font-size: 11px; }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 2000; display: flex;
+           align-items: center; justify-content: center; }
+.entry-box { background: #fff; border-radius: 10px; padding: 20px 24px; width: 440px; }
+.entry-box h2 { margin-top: 0; font-size: 17px; }
+[hidden] { display: none !important; }
+.edit-table input { width: 64px; text-align: right; }
+.edit-table td { padding: 2px; }
+
+/* ③ のアニメーション */
+#player { position: absolute; left: 10px; top: 10px; right: 230px; z-index: 1000; pointer-events: none; }
+#player-status { display: inline-block; background: rgba(255,255,255,0.92); border: 1px solid #ccc; border-radius: 6px;
+                 padding: 6px 10px; font-size: 12px; line-height: 1.6; margin-left: 50px; }
+.player-bar { pointer-events: auto; display: flex; align-items: center; gap: 8px; margin: 6px 0 0 50px;
+              background: rgba(255,255,255,0.92); border: 1px solid #ccc; border-radius: 6px; padding: 4px 8px; }
+#player-slider { flex: 1; }
+#player-time { font-size: 12px; white-space: nowrap; }
+.gantt-track { cursor: pointer; }
+.gantt-cursor { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid #1971c2; left: 0; }
+.hover-glow { width: 34px; height: 34px; border-radius: 50%; transform: translate(-50%, -50%);
+              background: rgba(43,138,62,0.35); animation: glow 1s ease-in-out infinite alternate; }
+@keyframes glow { from { opacity: 0.25; } to { opacity: 0.9; } }
+details.sub { margin: 4px 0 4px 8px; }
+details.sub > summary { font-size: 13px; font-weight: bold; }
+.edit-table th { white-space: nowrap; text-align: center; }
+.edit-table td:first-child { white-space: nowrap; }
+/* 再生の操作パネルは地図の外の下端に置く（地図を隠さないように、地図の高さをその分縮める） */
+#player { position: static; }
+#player-status { position: absolute; left: 60px; top: 10px; z-index: 1000; margin: 0; }
+.player-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; margin: 0; z-index: 1000;
+              border: none; border-top: 1px solid #ccc; border-radius: 0; background: #fff; }
+#map-area.with-player #map { bottom: 44px; }
+#map-area.with-player #legend { bottom: 54px; }
+/* 拠点の名前: 箱で囲まず、文字の周りを白くふちどる */
+.base-label { position: absolute; left: 28px; top: 3px; font-size: 13px; font-weight: 600; white-space: nowrap;
+              text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff; }
+.base-label span { font-weight: 400; font-size: 11px; margin-left: 4px; color: #666; }
+.warning { background: #fff4e6; border: 1px solid #f08c00; border-radius: 6px; padding: 6px 8px; color: #8a4b00; font-size: 13px; }

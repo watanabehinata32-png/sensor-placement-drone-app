@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>センサー配置と災害時ドローン巡回</title>
+  <!-- 地図を描く道具 Leaflet 1.9.4（web/vendor に同梱。背景の実地図は使わず、白地に道路だけを描く） -->
+  <link rel="stylesheet" href="/web/vendor/leaflet/leaflet.css">
+  <script src="/web/vendor/leaflet/leaflet.js"></script>
+  <link rel="stylesheet" href="/web/style.css">
+</head>
+<body>
+
+<!-- いちばん上: タイトルと「使っている配置」（いつも表示） -->
+<header>
+  <h1>📡 センサー配置と災害時ドローン巡回</h1>
+  <div id="placement-banner">配置: まだ選んでいません</div>
+  <div id="solver-label"></div>
+</header>
+
+<main>
+  <!-- 左: ① 配置 → ② 被害 → ③ 結果 の段 -->
+  <section id="panel">
+
+    <!-- ① 配置 -->
+    <div class="step" id="step1">
+      <h2 data-view="p1">① センサーの配置（一段階目）</h2>
+      <div class="step-body">
+        <p class="hint">市町村ごとの α・β・カバー率の要求を満たしながら、総コストが小さくなる配置を QUBO で求めます。</p>
+        <div class="buttons">
+          <button id="btn-p1-solve" class="primary">QUBO で配置を計算</button>
+          <button id="btn-p1-exact">厳密解の配置を使う</button>
+        </div>
+        <div class="buttons">
+          <button id="btn-p1-save">配置をファイルに保存</button>
+          <label class="file-button">保存した配置を読む<input type="file" id="file-p1-load" accept=".json"></label>
+        </div>
+        <details>
+          <summary>詳しい設定</summary>
+          <!-- 中をさらに 3 つの小見出しに分け、見たいものだけ開けるようにする -->
+          <details class="sub">
+            <summary>計算の設定（マス目・罰則の重み・制限時間）</summary>
+            <label>マス目の大きさ（m）<input type="number" id="p1-grid" step="100" min="100"></label>
+            <label>1地点1台まで（λ_one）<input type="number" id="p1-lam-one" step="1"></label>
+            <label>α・β の必要量（λ_ab）<input type="number" id="p1-lam-ab" step="0.1"></label>
+            <label>カバー率（λ_cov）<input type="number" id="p1-lam-cov" step="0.5"></label>
+            <label>Amplify の制限時間（ミリ秒）<input type="number" id="p1-time" step="500" min="100"></label>
+            <label class="check"><input type="checkbox" id="p1-cross"> 隣の市町村へのはみ出しもカバー率に数える</label>
+          </details>
+          <details class="sub">
+            <summary>センサーの性能</summary>
+            <table id="p1-sensor-table" class="edit-table"></table>
+          </details>
+          <details class="sub">
+            <summary>市町村の必要値</summary>
+            <table id="p1-muni-table" class="edit-table"></table>
+            <p class="hint" style="font-size:12px">中央市のカバー率下限は、元データの 100% から 95% にしています。</p>
+          </details>
+          <button id="btn-p1-reset" type="button">表を初期値に戻す</button>
+        </details>
+        <div id="p1-status" class="status"></div>
+        <div id="p1-result"></div>
+        <button id="btn-to-p2" class="primary wide" hidden>▶ この配置で被害を設定する（二段階目へ）</button>
+      </div>
+    </div>
+
+    <!-- ② 被害 -->
+    <div class="step" id="step2">
+      <h2 data-view="p2">② 被害の設定（二段階目）</h2>
+      <div class="step-body">
+        <p class="hint">地図をクリックして、通行止めの道路と通信断のセンサーを決めます。</p>
+        <div class="click-mode">
+          地図のクリックで:
+          <label><input type="radio" name="click-mode" value="road" checked> 通行止めを切り替え</label>
+          <label><input type="radio" name="click-mode" value="sensor"> 通信断を切り替え</label>
+          <label><input type="radio" name="click-mode" value="epicenter"> 震源を置いて被害をつくる</label>
+        </div>
+        <div id="damage-counts" class="counts"></div>
+        <div class="buttons">
+          <button id="btn-sample">サンプルの地震に戻す</button>
+          <button id="btn-clear">被害を全部消す</button>
+          <button id="btn-undo">1つ戻す</button>
+        </div>
+        <div id="p2-note" class="note"></div>
+        <details>
+          <summary>詳しい設定（車・拠点・バッテリー・震源・QUBO）</summary>
+          <h3>終了時刻の定義（目的②）</h3>
+          <label class="check"><input type="radio" name="end-mode" value="recovery" checked> 最後のセンサーが回復した時刻</label>
+          <label class="check"><input type="radio" name="end-mode" value="return"> 全車が拠点に帰り着いた時刻</label>
+          <h3>ドック搭載車の台数</h3>
+          <div id="base-inputs"></div>
+          <h3>バッテリー</h3>
+          <label>充電時間（分）<input type="number" id="f-charge" step="5" min="0"></label>
+          <label>予備なしで飛べる回数<input type="number" id="f-builtin" step="1" min="1"></label>
+          <label>予備1個で増える回数<input type="number" id="f-per-spare" step="1" min="0"></label>
+          <label>予備バッテリーの総数<input type="number" id="f-spare-total" step="1" min="0"></label>
+          <h3>震源から被害をつくるとき</h3>
+          <label>センサーが被害を受ける範囲（km）<input type="number" id="d-s-radius" step="5" min="0"></label>
+          <label>センサーの被害の強さ（0〜1）<input type="number" id="d-s-strength" step="0.1" min="0" max="1"></label>
+          <label>道路が被害を受ける範囲（km）<input type="number" id="d-r-radius" step="5" min="0"></label>
+          <label>道路の被害の強さ（0〜1）<input type="number" id="d-r-strength" step="0.1" min="0" max="1"></label>
+          <h3>QUBO</h3>
+          <label>同じセンサーを回る飛行を各拠点から何本残すか<input type="number" id="q-cand" step="1" min="1" max="10" value="1"></label>
+          <label>回復時刻の合計の重み（w_lat）<input type="number" id="q-wlat" step="0.1" value="1"></label>
+          <label>長いルートを嫌う強さ（p）<input type="number" id="q-pow" step="0.5" value="2"></label>
+          <label>罰金の強さ（倍率）<input type="number" id="q-penalty" step="0.5" value="1"></label>
+          <label>上限時刻 T を変えて解く回数<input type="number" id="q-rounds" step="1" min="1" max="20" value="8"></label>
+          <label>Amplify の制限時間（ミリ秒）<input type="number" id="q-time" step="500" min="100" value="3000"></label>
+        </details>
+        <button id="btn-p2-solve" class="primary wide">▶ ドローンの巡回を計算（QUBO）</button>
+        <div id="p2-status" class="status"></div>
+      </div>
+    </div>
+
+    <!-- ③ 結果 -->
+    <div class="step" id="step3">
+      <h2 data-view="p3">③ 結果</h2>
+      <div class="step-body">
+        <div id="p3-result"><p class="hint">② で「ドローンの巡回を計算」を押すと、ここに結果が出ます。</p></div>
+        <button id="btn-back-p2" hidden>◀ 被害を変える</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 右: 共通の地図と凡例 -->
+  <section id="map-area">
+    <div id="map"></div>
+    <div id="legend"></div>
+    <!-- ③ のアニメーション: 時刻スライダー・再生・速さと、その時刻の状況 -->
+    <div id="player" hidden>
+      <div id="player-status"></div>
+      <div class="player-bar">
+        <button id="player-play">▶</button>
+        <input type="range" id="player-slider" min="0" max="1" value="0">
+        <span id="player-time"></span>
+        <select id="player-speed">
+          <option value="1">1倍（1秒で1分）</option>
+          <option value="5" selected>5倍（1秒で5分）</option>
+          <option value="10">10倍（1秒で10分）</option>
+        </select>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- 最初の入口: 一段階目から始めるか、二段階目から始めるか -->
+<div id="entry" class="overlay">
+  <div class="entry-box">
+    <h2>どこから始めますか？</h2>
+    <button id="entry-p1" class="primary wide">① 一段階目から（センサーの配置を計算する）</button>
+    <button id="entry-exact" class="wide">② 二段階目から（厳密解の配置を使う）</button>
+    <label class="file-button wide">② 二段階目から（保存した配置ファイルを読む）<input type="file" id="entry-file" accept=".json"></label>
+    <p id="entry-status" class="hint">データを読み込んでいます…</p>
+  </div>
+</div>
+
+<script src="/web/app.js"></script>
+</body>
+</html>

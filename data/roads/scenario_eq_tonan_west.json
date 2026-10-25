@@ -1,0 +1,612 @@
+{
+ "scenario_id": "EQ-TONAN-W-02",
+ "title": "東南村西部を震源とする地震（サンプル・資料の図から読み取り）",
+ "description": "企業資料 p.6 の図の × 印・通信断・対応不能を読み取り、新しい道路データ（phase2_roads_v2）に割り当てたもの。",
+ "coordinate_system": "+proj=aeqd +lat_0=0 +lon_0=0 +datum=WGS84 +units=m +no_defs",
+ "epicenter": {
+  "x": 19417.7,
+  "y": -4576.0,
+  "note": "× 印の重心（資料に震源の座標は無い）"
+ },
+ "assumptions": {
+  "drone_one_way_reach_km": 4.0,
+  "launch_from": "拠点から通行止めでない区間だけを通って車が行ける一般道（motorway / motorway_link を除く）の上の任意の地点",
+  "unreachable_definition": "上の離陸できる地点から 4 km 以内に入らない通信断センサー",
+  "vehicles_can_use_motorway": true
+ },
+ "drone_bases": [
+  {
+   "facility_id": "B1",
+   "node_id": "N00122",
+   "name": "県庁",
+   "vehicles": 4
+  },
+  {
+   "facility_id": "B2",
+   "node_id": "N00123",
+   "name": "西南市役所",
+   "vehicles": 2
+  },
+  {
+   "facility_id": "B3",
+   "node_id": "N00124",
+   "name": "北東町役場",
+   "vehicles": 2
+  }
+ ],
+ "sensors_total": 86,
+ "comm_down_sensors": [
+  {
+   "candidate_id": "P02_1",
+   "municipality_id": "M02",
+   "nearest_launch_km_normal": 2.94,
+   "nearest_launch_km": 2.94,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P02_7",
+   "municipality_id": "M02",
+   "nearest_launch_km_normal": 2.47,
+   "nearest_launch_km": 2.47,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P06_2",
+   "municipality_id": "M06",
+   "nearest_launch_km_normal": 1.09,
+   "nearest_launch_km": 1.09,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P06_5",
+   "municipality_id": "M06",
+   "nearest_launch_km_normal": 1.08,
+   "nearest_launch_km": 1.08,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P06_8",
+   "municipality_id": "M06",
+   "nearest_launch_km_normal": 0.64,
+   "nearest_launch_km": 0.64,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P06_9",
+   "municipality_id": "M06",
+   "nearest_launch_km_normal": 0.86,
+   "nearest_launch_km": 0.86,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_1",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 2.98,
+   "nearest_launch_km": 5.44,
+   "status": "unreachable",
+   "unreachable_in_figure": true
+  },
+  {
+   "candidate_id": "P07_2",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 2.36,
+   "nearest_launch_km": 2.91,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_3",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 3.39,
+   "nearest_launch_km": 3.39,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_4",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 0.82,
+   "nearest_launch_km": 0.82,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_5",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 3.14,
+   "nearest_launch_km": 3.14,
+   "status": "reachable",
+   "unreachable_in_figure": true
+  },
+  {
+   "candidate_id": "P07_6",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 1.0,
+   "nearest_launch_km": 1.88,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_7",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 2.59,
+   "nearest_launch_km": 5.8,
+   "status": "unreachable",
+   "unreachable_in_figure": true
+  },
+  {
+   "candidate_id": "P07_8",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 1.85,
+   "nearest_launch_km": 1.85,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_9",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 1.37,
+   "nearest_launch_km": 7.94,
+   "status": "unreachable",
+   "unreachable_in_figure": true
+  },
+  {
+   "candidate_id": "P07_10",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 0.28,
+   "nearest_launch_km": 2.45,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_11",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 1.0,
+   "nearest_launch_km": 2.43,
+   "status": "reachable",
+   "unreachable_in_figure": false
+  },
+  {
+   "candidate_id": "P07_12",
+   "municipality_id": "M07",
+   "nearest_launch_km_normal": 0.98,
+   "nearest_launch_km": 5.52,
+   "status": "unreachable",
+   "unreachable_in_figure": false
+  }
+ ],
+ "closed_segments": [
+  "S1653",
+  "S0636",
+  "S1639",
+  "S0693",
+  "S0733",
+  "S0696",
+  "S0537",
+  "S1513",
+  "S0783",
+  "S0544",
+  "S0562",
+  "S1501",
+  "S0861",
+  "S0871",
+  "S0794",
+  "S0873",
+  "S1623",
+  "S0864",
+  "S0884",
+  "S0896",
+  "S0975",
+  "S0964",
+  "S1089",
+  "S0972",
+  "S1091",
+  "S1114",
+  "S1026",
+  "S1111",
+  "S1031",
+  "S1193",
+  "S1211",
+  "S1647",
+  "S1643",
+  "S0874"
+ ],
+ "closed_segments_detail": [
+  {
+   "segment_id": "S1653",
+   "highway": "motorway",
+   "name": "新緑自動車道",
+   "mark_px": [
+    770.5,
+    489.5
+   ],
+   "mark_to_segment_m": 99.1,
+   "moved": false
+  },
+  {
+   "segment_id": "S0636",
+   "highway": "trunk",
+   "name": "国道102号",
+   "mark_px": [
+    594.3,
+    566.2
+   ],
+   "mark_to_segment_m": 290.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1639",
+   "highway": "motorway",
+   "name": "新緑自動車道",
+   "mark_px": [
+    677.8,
+    577.2
+   ],
+   "mark_to_segment_m": 335.9,
+   "moved": false
+  },
+  {
+   "segment_id": "S0693",
+   "highway": "secondary",
+   "name": "県道107号",
+   "mark_px": [
+    767.5,
+    579.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0733",
+   "highway": "secondary",
+   "name": "県道145号",
+   "mark_px": [
+    662.0,
+    589.0
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0696",
+   "highway": "secondary",
+   "name": "県道107号",
+   "mark_px": [
+    751.5,
+    593.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0537",
+   "highway": "secondary",
+   "name": "県道110号",
+   "mark_px": [
+    929.5,
+    593.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1513",
+   "highway": "secondary",
+   "name": "県道126号",
+   "mark_px": [
+    675.5,
+    601.5
+   ],
+   "mark_to_segment_m": 57.1,
+   "moved": false
+  },
+  {
+   "segment_id": "S0783",
+   "highway": "trunk",
+   "name": "国道111号",
+   "mark_px": [
+    640.5,
+    603.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0544",
+   "highway": "secondary",
+   "name": "県道110号",
+   "mark_px": [
+    863.7,
+    601.9
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0562",
+   "highway": "primary",
+   "name": "県道1号",
+   "mark_px": [
+    860.5,
+    619.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1501",
+   "highway": "trunk",
+   "name": "国道111号",
+   "mark_px": [
+    717.5,
+    626.5
+   ],
+   "mark_to_segment_m": 46.1,
+   "moved": false
+  },
+  {
+   "segment_id": "S0861",
+   "highway": "primary",
+   "name": "県道1号",
+   "mark_px": [
+    842.5,
+    639.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0871",
+   "highway": "trunk",
+   "name": "国道110号",
+   "mark_px": [
+    740.3,
+    641.5
+   ],
+   "mark_to_segment_m": 34.8,
+   "moved": false
+  },
+  {
+   "segment_id": "S0794",
+   "highway": "secondary",
+   "name": "県道128号",
+   "mark_px": [
+    642.5,
+    648.5
+   ],
+   "mark_to_segment_m": 11.7,
+   "moved": false
+  },
+  {
+   "segment_id": "S0873",
+   "highway": "trunk",
+   "name": "国道110号",
+   "mark_px": [
+    754.5,
+    647.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1623",
+   "highway": "motorway",
+   "name": "新緑自動車道",
+   "mark_px": [
+    535.1,
+    652.7
+   ],
+   "mark_to_segment_m": 69.9,
+   "moved": false
+  },
+  {
+   "segment_id": "S0864",
+   "highway": "primary",
+   "name": "県道1号",
+   "mark_px": [
+    827.0,
+    655.9
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0884",
+   "highway": "secondary",
+   "name": "県道123号",
+   "mark_px": [
+    846.6,
+    657.4
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0896",
+   "highway": "secondary",
+   "name": "県道107号",
+   "mark_px": [
+    860.5,
+    700.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0975",
+   "highway": "secondary",
+   "name": "県道123号",
+   "mark_px": [
+    840.3,
+    711.7
+   ],
+   "mark_to_segment_m": 150.2,
+   "moved": false
+  },
+  {
+   "segment_id": "S0964",
+   "highway": "secondary",
+   "name": "県道139号",
+   "mark_px": [
+    814.0,
+    719.0
+   ],
+   "mark_to_segment_m": 498.6,
+   "moved": false
+  },
+  {
+   "segment_id": "S1089",
+   "highway": "secondary",
+   "name": "県道106号",
+   "mark_px": [
+    814.5,
+    739.5
+   ],
+   "mark_to_segment_m": 126.6,
+   "moved": false
+  },
+  {
+   "segment_id": "S0972",
+   "highway": "secondary",
+   "name": "県道123号",
+   "mark_px": [
+    840.5,
+    742.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1091",
+   "highway": "secondary",
+   "name": "県道106号",
+   "mark_px": [
+    802.2,
+    749.2
+   ],
+   "mark_to_segment_m": 503.1,
+   "moved": false
+  },
+  {
+   "segment_id": "S1114",
+   "highway": "secondary",
+   "name": "県道106号",
+   "mark_px": [
+    684.6,
+    751.6
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1026",
+   "highway": "primary",
+   "name": "県道4号",
+   "mark_px": [
+    763.5,
+    759.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1111",
+   "highway": "secondary",
+   "name": "県道106号",
+   "mark_px": [
+    698.5,
+    768.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1031",
+   "highway": "primary",
+   "name": "県道4号",
+   "mark_px": [
+    732.9,
+    794.5
+   ],
+   "mark_to_segment_m": 18.6,
+   "moved": false
+  },
+  {
+   "segment_id": "S1193",
+   "highway": "primary",
+   "name": "県道4号",
+   "mark_px": [
+    681.5,
+    839.5
+   ],
+   "mark_to_segment_m": 76.7,
+   "moved": false
+  },
+  {
+   "segment_id": "S1211",
+   "highway": "secondary",
+   "name": "県道112号",
+   "mark_px": [
+    690.5,
+    908.5
+   ],
+   "mark_to_segment_m": 0.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S1647",
+   "highway": "motorway",
+   "name": "新緑自動車道",
+   "mark_px": [
+    733.0,
+    528.0
+   ],
+   "mark_to_segment_m": 239.8,
+   "moved": false
+  },
+  {
+   "segment_id": "S1643",
+   "highway": "motorway",
+   "name": "新緑自動車道",
+   "mark_px": [
+    707.0,
+    550.0
+   ],
+   "mark_to_segment_m": 125.0,
+   "moved": false
+  },
+  {
+   "segment_id": "S0874",
+   "highway": "trunk",
+   "name": "国道110号",
+   "mark_px": null,
+   "note": "図で × 印が見えない 34 個目。結果が変わらない区間を仮に選んだ"
+  }
+ ],
+ "summary": {
+  "comm_down": 18,
+  "closed_segments": 34,
+  "unreachable": 4,
+  "unreachable_ids": [
+   "P07_1",
+   "P07_12",
+   "P07_7",
+   "P07_9"
+  ],
+  "unreachable_ids_in_figure": [
+   "P07_1",
+   "P07_5",
+   "P07_7",
+   "P07_9"
+  ],
+  "matches_figure": false,
+  "marks_read_from_figure": 33,
+  "marks_moved_to_match_figure": 0
+ }
+}
